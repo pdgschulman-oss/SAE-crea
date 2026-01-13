@@ -1,10 +1,9 @@
-// Fix: Import React to resolve the 'Cannot find namespace React' error when using React.ReactNode
-import React from 'react';
+import type { ReactNode } from 'react';
 
 export interface ServiceCard {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
 }
 
 export interface TeamMember {

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 
 export async function getAiAudit(restaurantInfo: string) {
@@ -32,5 +31,15 @@ export async function getAiAudit(restaurantInfo: string) {
     }
   });
 
-  return JSON.parse(response.text);
+  let text = response.text || "";
+  // Nettoyage au cas où le modèle renverrait du markdown
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  const cleanJson = jsonMatch ? jsonMatch[0] : text;
+
+  try {
+    return JSON.parse(cleanJson);
+  } catch (e) {
+    console.error("Erreur lors du parsing JSON de l'audit:", e);
+    throw new Error("La réponse de l'IA n'est pas au format attendu.");
+  }
 }
